@@ -13,17 +13,27 @@ function App() {
     {id: 3, title: 'Javascript 3', body: 'Description'}
   ])
 
+  
+
   const [title, setTitle] = useState('')
-  const bodyInputRef = useRef()  // получение доступа к DOM елементу
+  const [body, setBody] = useState('')
+  // const bodyInputRef = useRef()  // получение доступа к DOM елементу
 
   const addNewPost = (evenT) => {
-    evenT.preventDefault()
-    console.log(title) 
-    console.log(bodyInputRef.current.value)   // если выводить current - получим DOM елемент
-  }
-  // function addNewPost(){
+    evenT.preventDefault()  // предотвращаем дефолтное поведение браузера
+    const newPost = {
+      id: Date.now(),
+      title,
+      body
+    }
+    setPosts([...posts, newPost]) // (это концепция ) передаем новый массив, где разворачиваем старый массив posts и добавляем новый пост
+    setTitle(''); setBody('') /*обнуляем состояние инпутов названия 
+                                поста и его описания, после того как добавили пост*/
 
-  // }
+    // console.log(title) 
+    //console.log(bodyInputRef.current.value)   // если выводить current - получим DOM елемент
+  }
+
 
   return (
     <div className="App">
@@ -40,7 +50,8 @@ function App() {
           />
           {/* -Неуправляемый компонент-(неконтролируемый) */}
           <MyInput 
-            ref={bodyInputRef}
+            value={body}
+            onChange={e => setBody(e.target.value)}
             type="text" 
             placeholder="Описание поста"
           />
